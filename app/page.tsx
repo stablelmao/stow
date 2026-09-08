@@ -51,7 +51,7 @@ export default function Home() {
           </div>
         </div>
         <div className="steps" id="how">
-          <article><b>01</b><h3>Sign in</h3><p>Use the Google account you already have.</p></article>
+          <article><b>01</b><h3>Your account, your choice</h3><p>Choose an available sign-in method: email, phone, username, Apple, or Google. Manage your profile and security from Account settings.</p></article>
           <article><b>02</b><h3>Drop a file</h3><p>Upload directly to Vercel Blob—no server bottleneck.</p></article>
           <article><b>03</b><h3>Share the link</h3><p>Copy a clean, fast public URL in one click.</p></article>
         </div>
