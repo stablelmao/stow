@@ -1,6 +1,6 @@
 "use client";
 
-import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
 import { UserCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ function AuthenticatedActions({ compact }: { compact: boolean }) {
   if (isSignedIn) {
     return (
       <div className={`auth-actions ${compact ? "compact" : ""}`}>
-        <Link href="/drive" className={`google-button ${compact ? "compact" : ""}`}>Open drive</Link>
+        <a href="/drive" className={`google-button ${compact ? "compact" : ""}`}>Open drive</a>
         {compact ? <UserButton /> : null}
       </div>
     );
@@ -33,15 +33,14 @@ function AuthenticatedActions({ compact }: { compact: boolean }) {
 
   return (
     <div className={`auth-actions ${compact ? "compact" : ""}`}>
-      <SignInButton mode="modal" forceRedirectUrl="/drive">
-        <button className={`google-button ${compact ? "compact" : ""}`}>
-          <UserCircle size={compact ? 17 : 19} weight="bold" aria-hidden="true" />
-          <span>Sign in</span>
-        </button>
-      </SignInButton>
-      <SignUpButton mode="modal" forceRedirectUrl="/drive">
-        <button className={`create-account-button ${compact ? "compact" : ""}`}>Create account</button>
-      </SignUpButton>
+      {/* A document navigation lets Clerk synchronize its session before auth routes run. */}
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+      <a href="/sign-in" className={`google-button ${compact ? "compact" : ""}`}>
+        <UserCircle size={compact ? 17 : 19} weight="bold" aria-hidden="true" />
+        <span>Sign in</span>
+      </a>
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+      <a href="/sign-up" className={`create-account-button ${compact ? "compact" : ""}`}>Create account</a>
     </div>
   );
 }
