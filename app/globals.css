@@ -35,6 +35,11 @@ button { color: inherit; }
 .google-button:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
 .google-button.compact { min-height: 38px; padding: 0 17px; box-shadow: none; background: transparent; }
 .google-button.compact:hover { transform: none; background: var(--white); box-shadow: none; }
+.auth-actions { display: flex; align-items: center; gap: 12px; }
+.create-account-button { min-height: 48px; padding: 0 22px; border: 1px solid var(--blue); border-radius: 999px; background: var(--blue); color: white; font-size: 14px; font-weight: 720; cursor: pointer; transition: transform .16s ease, background .16s ease; }
+.create-account-button:hover { background: var(--blue-dark); }
+.create-account-button:active { transform: scale(.97); }
+.create-account-button.compact { min-height: 38px; padding: 0 16px; font-size: 13px; }
 
 .hero { min-height: 710px; display: grid; grid-template-columns: 48% 52%; align-items: center; padding-block: 70px 84px; }
 .hero-copy { padding-right: 8%; }
@@ -86,7 +91,7 @@ button { color: inherit; }
 }
 
 @media (max-width: 620px) {
-  .container { width: min(100% - 28px, 1180px); }.site-header { height: 72px; }.site-header .google-button { min-height: 34px; padding: 0 12px; }.site-header .google-button svg { display: none; }
+  .container { width: min(100% - 28px, 1180px); }.site-header { height: 72px; }.site-header .google-button { min-height: 34px; padding: 0 12px; }.site-header .google-button svg { display: none; }.site-header .create-account-button { display: none; }
   .hero { min-height: auto; padding: 54px 0 70px; }.hero h1 { font-size: clamp(54px, 17vw, 76px); }.hero-copy > p { font-size: 16px; }.hero-actions { align-items: flex-start; flex-direction: column; gap: 17px; }
   .hero-visual { padding: 8px 5px 0; }.preview-shell { min-height: 455px; box-shadow: 7px 8px 0 rgba(23,23,20,.85); }.preview-content { padding: 16px; }.upload-limit { display: none; }
   .signal-inner { display: grid; }.why { padding-block: 78px; }.why-grid { padding-bottom: 54px; }.steps { grid-template-columns: 1fr; }.steps article { min-height: 170px; }.steps article + article { border-left: 0; border-top: 1px solid var(--ink); }.steps h3 { margin-top: 32px; }
@@ -97,6 +102,7 @@ button { color: inherit; }
 
 /* Drive */
 .drive-page { min-height: 100dvh; background: var(--paper); }
+.auth-page { min-height: 100dvh; display: grid; place-items: center; padding: 32px 16px; background: var(--paper); }
 .drive-header { height: 82px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid var(--ink); }
 .drive-label, .upload-number, .drive-welcome > span, .files-title-row span, .setup-banner b { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: .14em; }
 .account-slot { justify-self: end; }.account-slot > a { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; }

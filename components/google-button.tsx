@@ -1,23 +1,35 @@
 "use client";
 
-import { SignInButton } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { UserCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export function GoogleButton({ configured, compact = false }: { configured: boolean; compact?: boolean }) {
-  const inner = (
-    <span className={`google-button ${compact ? "compact" : ""}`}>
+  if (!configured) return (
+    <Link href="/drive" className={`google-button ${compact ? "compact" : ""}`}>
       <UserCircle size={compact ? 17 : 19} weight="bold" aria-hidden="true" />
-      <span>{configured ? "Sign in" : "Explore preview"}</span>
-    </span>
+      <span>Explore preview</span>
+    </Link>
   );
 
-  if (!configured) return <Link href="/drive">{inner}</Link>;
-
   return (
-    <SignInButton mode="modal" forceRedirectUrl="/drive">
-      <button className="button-reset">{inner}</button>
-    </SignInButton>
+    <div className={`auth-actions ${compact ? "compact" : ""}`}>
+      <SignedOut>
+        <SignInButton mode="modal" forceRedirectUrl="/drive">
+          <button className={`google-button ${compact ? "compact" : ""}`}>
+            <UserCircle size={compact ? 17 : 19} weight="bold" aria-hidden="true" />
+            <span>Sign in</span>
+          </button>
+        </SignInButton>
+        <SignUpButton mode="modal" forceRedirectUrl="/drive">
+          <button className={`create-account-button ${compact ? "compact" : ""}`}>Create account</button>
+        </SignUpButton>
+      </SignedOut>
+      <SignedIn>
+        <Link href="/drive" className={`google-button ${compact ? "compact" : ""}`}>Open drive</Link>
+        {compact ? <UserButton /> : null}
+      </SignedIn>
+    </div>
   );
 }
 

@@ -13,11 +13,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const content = <body>{children}</body>;
-
   return (
     <html lang="en" className={`${geist.variable} ${mono.variable}`} data-scroll-behavior="smooth">
-      {isClerkConfigured ? <ClerkProvider>{content}</ClerkProvider> : content}
+      <body>
+        {isClerkConfigured ? (
+          <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">
+            {children}
+          </ClerkProvider>
+        ) : children}
+      </body>
     </html>
   );
 }

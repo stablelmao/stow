@@ -24,8 +24,8 @@ In Settings > Environment Variables, add keys from the same Clerk instance:
 | --- | --- |
 | NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY | Clerk publishable key |
 | CLERK_SECRET_KEY | Clerk secret key |
-| NEXT_PUBLIC_CLERK_SIGN_IN_URL | / |
-| NEXT_PUBLIC_CLERK_SIGN_UP_URL | / |
+| NEXT_PUBLIC_CLERK_SIGN_IN_URL | /sign-in |
+| NEXT_PUBLIC_CLERK_SIGN_UP_URL | /sign-up |
 
 Choose the intended Vercel environments. Use development keys for testing and production keys for launch. Never commit secret keys.
 
