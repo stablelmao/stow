@@ -5,6 +5,8 @@ import { isClerkConfigured } from "@/lib/config";
 const isProtectedRoute = createRouteMatcher(["/drive(.*)", "/api(.*)"]);
 const clerkHandler = clerkMiddleware(async (auth, request) => {
   if (isProtectedRoute(request)) await auth.protect();
+}, {
+  frontendApiProxy: { enabled: true },
 });
 
 export default function proxy(request: NextRequest, event: NextFetchEvent) {
@@ -19,4 +21,3 @@ export const config = {
     "/__clerk/:path*",
   ],
 };
-
