@@ -4,6 +4,9 @@ import { DriveHeader } from "@/components/drive-header";
 import { FileList, type HostedFile } from "@/components/file-list";
 import { UploadPanel } from "@/components/upload-panel";
 import { isBlobConfigured, isClerkConfigured } from "@/lib/config";
+import { createShareId } from "@/lib/share";
+
+export const dynamic = "force-dynamic";
 
 const demoFiles: HostedFile[] = [
   { url: "#brand-guidelines", pathname: "demo/Brand-guidelines.pdf", size: 8810000, uploadedAt: "Today, 2:14 PM", demo: true },
@@ -26,13 +29,14 @@ export default async function DrivePage() {
     const result = await list({ prefix: `${userId}/`, limit: 100 });
     files = result.blobs.map((blob) => ({
       url: blob.url,
+      shareUrl: `/f/${createShareId(blob.pathname)}`,
       pathname: blob.pathname,
       size: blob.size,
       uploadedAt: new Intl.DateTimeFormat("en", { month: "short", day: "numeric" }).format(blob.uploadedAt),
     }));
   }
 
-  const live = isBlobConfigured && isClerkConfigured;
+  const live = isBlobConfigured && isClerkConfigured && Boolean(userId);
 
   return (
     <main className="drive-page">
@@ -46,4 +50,3 @@ export default async function DrivePage() {
     </main>
   );
 }
-

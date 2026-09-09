@@ -4,7 +4,7 @@ import { ArrowSquareOut, Check, Copy, DotsThree, File, FilePdf, Image as ImageIc
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export type HostedFile = { url: string; pathname: string; size: number; uploadedAt: string; demo?: boolean };
+export type HostedFile = { url: string; shareUrl?: string; pathname: string; size: number; uploadedAt: string; demo?: boolean };
 
 const RANDOM_SUFFIX_RE = /-[a-zA-Z0-9]{20,}(?=\.[^.]+$|$)/;
 
@@ -26,7 +26,8 @@ export function FileList({ files, canDelete }: { files: HostedFile[]; canDelete:
   const [deleting, setDeleting] = useState<string | null>(null);
 
   const copy = async (item: HostedFile) => {
-    await navigator.clipboard.writeText(item.url);
+    const shareUrl = item.shareUrl ? new URL(item.shareUrl, window.location.origin).toString() : item.url;
+    await navigator.clipboard.writeText(shareUrl);
     setCopied(item.url);
     window.setTimeout(() => setCopied(null), 1200);
   };
@@ -58,7 +59,7 @@ export function FileList({ files, canDelete }: { files: HostedFile[]; canDelete:
                 <span>{item.uploadedAt}</span>
                 <div className="row-actions">
                   <button onClick={() => copy(item)} aria-label={`Copy link for ${name}`}>{copied === item.url ? <Check size={18} /> : <Copy size={18} />}</button>
-                  <a href={item.url} target="_blank" rel="noreferrer" aria-label={`Open ${name}`}><ArrowSquareOut size={18} /></a>
+                  <a href={item.shareUrl ?? item.url} target="_blank" rel="noreferrer" aria-label={`Open ${name}`}><ArrowSquareOut size={18} /></a>
                   <button onClick={() => setMenu(menu === item.url ? null : item.url)} aria-label={`More options for ${name}`}><DotsThree size={21} weight="bold" /></button>
                   {menu === item.url && (
                     <div className="file-menu"><button disabled={!canDelete || item.demo} onClick={() => remove(item)}><Trash size={16} /> {item.demo ? "Demo file" : "Delete file"}</button></div>
@@ -72,4 +73,3 @@ export function FileList({ files, canDelete }: { files: HostedFile[]; canDelete:
     </section>
   );
 }
-

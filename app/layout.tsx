@@ -17,7 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${geist.variable} ${mono.variable}`} data-scroll-behavior="smooth">
       <body>
         {isClerkConfigured ? (
-          <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">
+          <ClerkProvider dynamic signInUrl="/sign-in" signUpUrl="/sign-up">
             {children}
           </ClerkProvider>
         ) : children}
@@ -25,4 +25,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-
