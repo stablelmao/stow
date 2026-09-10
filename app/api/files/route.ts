@@ -1,6 +1,24 @@
 import { auth } from "@clerk/nextjs/server";
-import { del } from "@vercel/blob";
+import { del, list } from "@vercel/blob";
 import { isBlobConfigured, isClerkConfigured } from "@/lib/config";
+import { createShareId } from "@/lib/share";
+
+export async function GET() {
+  if (!isClerkConfigured || !isBlobConfigured) return Response.json({ error: "Not configured" }, { status: 503 });
+  const { userId } = await auth();
+  if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  const result = await list({ prefix: `${userId}/`, limit: 100 });
+  return Response.json({
+    files: result.blobs.map((blob) => ({
+      url: blob.url,
+      shareUrl: `/f/${createShareId(blob.pathname)}`,
+      pathname: blob.pathname,
+      size: blob.size,
+      uploadedAt: new Intl.DateTimeFormat("en", { month: "short", day: "numeric" }).format(blob.uploadedAt),
+    })),
+  });
+}
 
 export async function DELETE(request: Request) {
   if (!isClerkConfigured || !isBlobConfigured) return Response.json({ error: "Not configured" }, { status: 503 });

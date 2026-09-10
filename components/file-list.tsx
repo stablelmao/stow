@@ -19,7 +19,7 @@ function fileIcon(name: string) {
   return File;
 }
 
-export function FileList({ files, canDelete }: { files: HostedFile[]; canDelete: boolean }) {
+export function FileList({ files, canDelete, getAuthToken, onDeleted }: { files: HostedFile[]; canDelete: boolean; getAuthToken?: () => Promise<string | null>; onDeleted?: () => void | Promise<void> }) {
   const router = useRouter();
   const [copied, setCopied] = useState<string | null>(null);
   const [menu, setMenu] = useState<string | null>(null);
@@ -35,10 +35,17 @@ export function FileList({ files, canDelete }: { files: HostedFile[]; canDelete:
   const remove = async (item: HostedFile) => {
     if (!canDelete || item.demo) return;
     setDeleting(item.url);
-    const response = await fetch(`/api/files?url=${encodeURIComponent(item.url)}`, { method: "DELETE" });
+    const token = await getAuthToken?.();
+    const response = await fetch(`/api/files?url=${encodeURIComponent(item.url)}`, {
+      method: "DELETE",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
     setDeleting(null);
     setMenu(null);
-    if (response.ok) router.refresh();
+    if (response.ok) {
+      if (onDeleted) void onDeleted();
+      else router.refresh();
+    }
   };
 
   return (
@@ -73,3 +80,4 @@ export function FileList({ files, canDelete }: { files: HostedFile[]; canDelete:
     </section>
   );
 }
+

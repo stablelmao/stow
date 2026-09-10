@@ -14,7 +14,7 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 ** index).toFixed(index ? 1 : 0)} ${units[index]}`;
 }
 
-export function UploadPanel({ enabled, uploadPrefix }: { enabled: boolean; uploadPrefix: string }) {
+export function UploadPanel({ enabled, uploadPrefix, getAuthToken, onUploaded }: { enabled: boolean; uploadPrefix: string; getAuthToken?: () => Promise<string | null>; onUploaded?: () => void | Promise<void> }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -35,9 +35,11 @@ export function UploadPanel({ enabled, uploadPrefix }: { enabled: boolean; uploa
     setStatus("uploading");
     setMessage("");
     try {
+      const token = await getAuthToken?.();
       await upload(`${uploadPrefix}/${file.name}`, file, {
         access: "public",
         handleUploadUrl: "/api/upload",
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         multipart: file.size > 10 * 1024 * 1024,
         onUploadProgress: ({ percentage }) => setProgress(Math.round(percentage)),
       });
@@ -46,7 +48,8 @@ export function UploadPanel({ enabled, uploadPrefix }: { enabled: boolean; uploa
       window.setTimeout(() => {
         setFile(null);
         setStatus("idle");
-        router.refresh();
+        if (onUploaded) void onUploaded();
+        else router.refresh();
       }, 900);
     } catch (error) {
       setStatus("error");
