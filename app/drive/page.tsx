@@ -2,7 +2,7 @@ import { DriveHeader } from "@/components/drive-header";
 import { DriveClient } from "@/components/drive-client";
 import { FileList, type HostedFile } from "@/components/file-list";
 import { UploadPanel } from "@/components/upload-panel";
-import { isBlobConfigured, isClerkConfigured } from "@/lib/config";
+import { isClerkConfigured } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ const demoFiles: HostedFile[] = [
 ];
 
 export default async function DrivePage() {
-  if (isClerkConfigured) return <DriveClient blobConfigured={isBlobConfigured} />;
+  if (isClerkConfigured) return <DriveClient />;
 
   return (
     <main className="drive-page">
