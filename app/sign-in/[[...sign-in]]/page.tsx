@@ -3,5 +3,6 @@ import { isClerkConfigured } from "@/lib/config";
 
 export default function SignInPage() {
   if (!isClerkConfigured) return <main className="auth-page">Authentication is not configured yet.</main>;
-  return <main className="auth-page"><SignIn forceRedirectUrl="/drive" /></main>;
+  return <main className="auth-page"><SignIn forceRedirectUrl="/drive" oauthFlow="redirect" fallback={<p>Opening secure sign-in…</p>} /></main>;
 }
+
